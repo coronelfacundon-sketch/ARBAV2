@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>ARBA · Panel de Empresas — Simulación</title>
+  <link rel="stylesheet" href="../assets/styles.css">
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <div class="brand">
+        <div class="logo">A</div>
+        <h1>ARBA · Panel de Empresas — Simulación</h1>
+      </div>
+      <a class="btn ghost" href="../">← Volver</a>
+    </div>
+<div class="container">
+    <div class="header">
+      <h1>Panel de Empresas — ARBA (Simulado)</h1>
+      <a class="btn ghost" href="../">← Volver</a>
+    </div>
+
+    <div id="login" class="card">
+      <h3>Login simulado</h3>
+      <div class="row">
+        <div class="input"><label>Usuario</label><input id="u" placeholder="ARBA"></div>
+        <div class="input"><label>Clave</label><input id="p" type="password" placeholder="ARBAISAP123"></div>
+      </div>
+      <button class="btn primary" id="btnLogin">Ingresar</button>
+      <p class="notice">Usuario: <code>ARBA</code> — Clave: <code>ARBAISAP123</code></p>
+    </div>
+
+    <div id="dash" class="card" hidden>
+      <div class="row">
+        <input id="q" class="input flex-1" placeholder="Buscar...">
+        <select id="tipo" class="input">
+          <option value="">Todos</option>
+          <option value="LOCAL">IIBB Local</option>
+          <option value="CM">Convenio Multilateral</option>
+          <option value="PADRON">Padrón</option>
+        </select>
+        <button class="btn" id="btnCSV">Exportar CSV</button>
+        <button class="btn" id="btnXLS">Exportar XLS</button>
+      </div>
+      <table class="table" id="tabla">
+        <thead>
+          <tr><th>Tipo</th><th>Fecha</th><th>Razón Social</th><th>CUIT</th><th>Detalle</th><th>Acciones</th></tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </div>
+  <script type="module" src="../assets/utils.js"></script>
+  <script type="module" src="./app.js"></script>
+  </div>
+  <script type="module" src="../assets/utils.js"></script>
+  <script type="module" src="./app.js"></script>
+</body>
+</html>
