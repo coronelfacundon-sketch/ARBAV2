@@ -3,67 +3,106 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>ARBA · Simulación de Empresas (PBA)</title>
-  <link rel="stylesheet" href="./assets/styles.css">
+  <title>ARBA · Alta IIBB Local (PBA) — Simulación</title>
+  <link rel="stylesheet" href="../assets/styles.css">
 </head>
 <body>
   <div class="container">
     <div class="header">
       <div class="brand">
         <div class="logo">A</div>
-        <h1>ARBA · Simulación de Empresas (PBA)</h1>
+        <h1>ARBA · Alta IIBB Local (PBA) — Simulación</h1>
       </div>
-      <span class="badge">Local · Sin backend</span>
+      <a class="btn ghost" href="../">← Volver</a>
     </div>
-
-    <div class="hero">
-      <p>Simulador educativo para <b>Ingresos Brutos</b> en PBA: alta local, convenio multilateral, padrón y panel. Todo funciona en tu navegador y permite <b>imprimir constancias</b> y <b>exportar CSV/XLS</b>.</p>
+<div class="container">
+    <div class="header">
+      <h1>Alta IIBB Local (PBA) — Simulación</h1>
+      <a class="btn ghost" href="../">← Volver</a>
     </div>
+    <div class="stepper" id="stepper"></div>
 
-    <div class="grid cols-3">
-      <div class="card">
-        <div class="icon">🏢</div>
-        <h2>Alta IIBB Local (PBA)</h2>
-        <p>Inscripción local con domicilios, actividad NAES, regímenes y DFE simulado.</p>
-        <a class="btn primary" href="./iibb-local/">
-          <span>Abrir</span>
-        </a>
-      </div>
-
-      <div class="card">
-        <div class="icon">🧭</div>
-        <h2>Convenio Multilateral</h2>
-        <p>Sede PBA con actividades por jurisdicción y distribución que suma 100%.</p>
-        <a class="btn primary" href="./cm/">
-          <span>Abrir</span>
-        </a>
-      </div>
-
-      <div class="card">
-        <div class="icon">📄</div>
-        <h2>Padrón y Alícuotas</h2>
-        <p>Consulta/edición de padrón simulado, alícuotas por actividad y regímenes.</p>
-        <a class="btn primary" href="./padron/">
-          <span>Abrir</span>
-        </a>
-      </div>
-
-      <div class="card">
-        <div class="icon">📊</div>
-        <h2>Panel de Empresas</h2>
-        <p>Buscador, filtros por tipo, constancias y exportaciones.</p>
-        <div class="row">
-          <a class="btn primary" href="./empresas/">Abrir</a>
-          <span class="kbd">Usuario: ARBA</span>
-          <span class="kbd">Clave: ARBAISAP123</span>
+    <div id="screen-form" class="card">
+      <form id="form">
+        <div data-step="1">
+          <h3>Paso 1 · Identificación</h3>
+          <div class="row">
+            <div class="input flex-1"><label>Razón social</label><input required name="razon_social"></div>
+            <div class="input"><label>CUIT</label><input required name="cuit" inputmode="numeric" maxlength="11"></div>
+          </div>
+          <div class="row">
+            <div class="input"><label>Teléfono</label><input required name="telefono" inputmode="numeric"></div>
+            <div class="input flex-1"><label>Email</label><input required name="email" type="email"></div>
+          </div>
         </div>
-      </div>
+
+        <div data-step="2" hidden>
+          <h3>Paso 2 · Domicilios</h3>
+          <h4>Domicilio Fiscal</h4>
+          <div class="row">
+            <div class="input"><label>Calle</label><input required name="df_calle"></div>
+            <div class="input"><label>Número</label><input required name="df_numero" inputmode="numeric"></div>
+            <div class="input"><label>Localidad</label><input required name="df_localidad"></div>
+            <div class="input"><label>CP (PBA)</label><input required name="cp" placeholder="####"></div>
+          </div>
+          <h4>Domicilio de Actividad (PBA)</h4>
+          <div class="row">
+            <div class="input"><label>Calle</label><input required name="da_calle"></div>
+            <div class="input"><label>Número</label><input required name="da_numero" inputmode="numeric"></div>
+            <div class="input"><label>Localidad</label><input required name="da_localidad"></div>
+          </div>
+        </div>
+
+        <div data-step="3" hidden>
+          <h3>Paso 3 · Actividades y Fechas</h3>
+          <div class="row">
+            <div class="input flex-1">
+              <label>Actividad (NAES)</label>
+              <select name="actividad" required>
+                <option value="">— Seleccionar —</option>
+                <option value="4711 — Venta al por menor en comercios no especializados">4711 — Venta al por menor en comercios no especializados</option>
+                <option value="6201 — Desarrollo de software">6201 — Desarrollo de software</option>
+                <option value="5610 — Servicios de comidas y bebidas">5610 — Servicios de comidas y bebidas</option>
+              </select>
+            </div>
+            <div class="input"><label>Fecha de inicio</label><input type="date" name="fecha_inicio" required></div>
+          </div>
+          <div class="row">
+            <div class="input"><label><input type="checkbox" name="retencion"> Agente de Retención</label></div>
+            <div class="input"><label><input type="checkbox" name="percepcion"> Agente de Percepción</label></div>
+            <div class="input"><label><input type="checkbox" name="exento"> Exento</label></div>
+            <div class="input"><label><input type="checkbox" name="dfe_aceptado"> DFE aceptado</label></div>
+          </div>
+        </div>
+
+        <div data-step="4" hidden>
+          <h3>Paso 4 · Revisión</h3>
+          <p class="notice">Verificá los datos antes de guardar. Se almacenan localmente (este navegador).</p>
+          <div id="review" class="card"></div>
+        </div>
+
+        <div class="row no-print">
+          <button class="btn" type="button" id="btn-prev">← Anterior</button>
+          <div class="flex-1"></div>
+          <button class="btn primary" type="button" id="btn-next">Siguiente →</button>
+        </div>
+      </form>
     </div>
 
-    <footer>
-      <span>Uso educativo — datos ficticios</span>
-      <span class="notice">ARBA Sim • v1.0</span>
-    </footer>
+    <div id="screen-constancia" class="card" hidden>
+      <h2>Constancia — IIBB Local (Simulada)</h2>
+      <div id="constancia"></div>
+      <hr class="sep">
+      <div class="row no-print">
+        <button class="btn" onclick="window.print()">🖨️ Imprimir/Guardar PDF</button>
+        <a class="btn ghost" href="../">Volver al inicio</a>
+      </div>
+    </div>
   </div>
+  <script type="module" src="../assets/utils.js"></script>
+  <script type="module" src="./app.js"></script>
+  </div>
+  <script type="module" src="../assets/utils.js"></script>
+  <script type="module" src="./app.js"></script>
 </body>
 </html>
