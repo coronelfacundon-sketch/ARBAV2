@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>ARBA · Padrón y Alícuotas — Simulación</title>
+  <link rel="stylesheet" href="../assets/styles.css">
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <div class="brand">
+        <div class="logo">A</div>
+        <h1>ARBA · Padrón y Alícuotas — Simulación</h1>
+      </div>
+      <a class="btn ghost" href="../">← Volver</a>
+    </div>
+<div class="container">
+    <div class="header">
+      <h1>Padrón y Alícuotas — Simulación</h1>
+      <a class="btn ghost" href="../">← Volver</a>
+    </div>
+    <div class="card">
+      <h3>Buscar o cargar padrón</h3>
+      <div class="row">
+        <div class="input"><label>CUIT</label><input id="cuit" maxlength="11" inputmode="numeric" placeholder="11 dígitos"></div>
+        <button class="btn primary" id="btnBuscar">Buscar</button>
+        <button class="btn" id="btnNuevo">Nuevo / Limpiar</button>
+      </div>
+    </div>
+
+    <div id="formCard" class="card" hidden>
+      <form id="form">
+        <div class="row">
+          <div class="input flex-1"><label>Razón social</label><input name="razon_social" required></div>
+          <div class="input"><label>Estado</label>
+            <select name="estado">
+              <option>Activo</option>
+              <option>Inactivo</option>
+              <option>Suspendido</option>
+            </select>
+          </div>
+        </div>
+        <div class="row">
+          <div class="input flex-1"><label>Domicilio fiscal</label><input name="domicilio_fiscal" placeholder="Calle, número, localidad, CP"></div>
+        </div>
+
+        <h3>Actividades y alícuotas</h3>
+        <div id="actRows"></div>
+        <div class="row">
+          <div class="input flex-1">
+            <label>Actividad (NAES)</label>
+            <select id="naes">
+              <option value="">— Seleccionar —</option>
+              <option value="4711 — Venta al por menor">4711 — Venta al por menor</option>
+              <option value="6201 — Desarrollo de software">6201 — Desarrollo de software</option>
+              <option value="5610 — Comidas y bebidas">5610 — Comidas y bebidas</option>
+            </select>
+          </div>
+          <div class="input"><label>Alícuota (%)</label><input id="ali" type="number" min="0" step="0.01"></div>
+          <button class="btn" type="button" id="btnAdd">Agregar</button>
+        </div>
+
+        <div class="row">
+          <div class="input">
+            <label>Régimen de recaudación</label>
+            <select name="regimen">
+              <option value="ninguno">Ninguno</option>
+              <option value="retencion">Retención</option>
+              <option value="percepcion">Percepción</option>
+              <option value="ambos">Ambos</option>
+            </select>
+          </div>
+          <div class="input flex-1"><label>Exenciones / Beneficios</label><input name="exenciones" placeholder="Opcional (texto)"></div>
+        </div>
+
+        <div class="row no-print">
+          <button class="btn primary" type="button" id="btnGuardar">Guardar</button>
+          <button class="btn" type="button" id="btnImprimir">Imprimir</button>
+        </div>
+      </form>
+    </div>
+  </div>
+  <script type="module" src="../assets/utils.js"></script>
+  <script type="module" src="./app.js"></script>
+  </div>
+  <script type="module" src="../assets/utils.js"></script>
+  <script type="module" src="./app.js"></script>
+</body>
+</html>
