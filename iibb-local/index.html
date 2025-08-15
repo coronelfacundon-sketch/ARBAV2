@@ -1,96 +1,108 @@
-import { keys, saveRecord, validateCUIT11, validatePhoneDigits, validateEmail, validateCP, nowISO } from "../assets/utils.js";
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>ARBA · Alta IIBB Local (PBA) — Simulación</title>
+  <link rel="stylesheet" href="../assets/styles.css">
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <div class="brand">
+        <div class="logo">A</div>
+        <h1>ARBA · Alta IIBB Local (PBA) — Simulación</h1>
+      </div>
+      <a class="btn ghost" href="../">← Volver</a>
+    </div>
+<div class="container">
+    <div class="header">
+      <h1>Alta IIBB Local (PBA) — Simulación</h1>
+      <a class="btn ghost" href="../">← Volver</a>
+    </div>
+    <div class="stepper" id="stepper"></div>
 
-const STORAGE_KEY = keys.LOCAL;
-const steps = [1,2,3,4];
-let current = 1;
-const form = document.getElementById('form');
-const stepper = document.getElementById('stepper');
-const screenForm = document.getElementById('screen-form');
-const screenConst = document.getElementById('screen-constancia');
-const reviewBox = document.getElementById('review');
-const constanciaBox = document.getElementById('constancia');
+    <div id="screen-form" class="card">
+      <form id="form">
+        <div data-step="1">
+          <h3>Paso 1 · Identificación</h3>
+          <div class="row">
+            <div class="input flex-1"><label>Razón social</label><input required name="razon_social"></div>
+            <div class="input"><label>CUIT</label><input required name="cuit" inputmode="numeric" maxlength="11"></div>
+          </div>
+          <div class="row">
+            <div class="input"><label>Teléfono</label><input required name="telefono" inputmode="numeric"></div>
+            <div class="input flex-1"><label>Email</label><input required name="email" type="email"></div>
+          </div>
+        </div>
 
-function drawStepper(){ stepper.innerHTML = steps.map(n => `<span class="step ${n===current?'active':''}">Paso ${n}</span>`).join(''); }
-function showStep(n){
-  current = n; document.querySelectorAll('[data-step]').forEach(el => el.hidden = Number(el.getAttribute('data-step')) !== n ); drawStepper();
-}
-drawStepper(); showStep(1);
+        <div data-step="2" hidden>
+          <h3>Paso 2 · Domicilios</h3>
+          <h4>Domicilio Fiscal</h4>
+          <div class="row">
+            <div class="input"><label>Calle</label><input required name="df_calle"></div>
+            <div class="input"><label>Número</label><input required name="df_numero" inputmode="numeric"></div>
+            <div class="input"><label>Localidad</label><input required name="df_localidad"></div>
+            <div class="input"><label>CP (PBA)</label><input required name="cp" placeholder="####"></div>
+          </div>
+          <h4>Domicilio de Actividad (PBA)</h4>
+          <div class="row">
+            <div class="input"><label>Calle</label><input required name="da_calle"></div>
+            <div class="input"><label>Número</label><input required name="da_numero" inputmode="numeric"></div>
+            <div class="input"><label>Localidad</label><input required name="da_localidad"></div>
+          </div>
+        </div>
 
-document.getElementById('btn-prev').addEventListener('click', ()=>{ if(current>1) showStep(current-1); });
-document.getElementById('btn-next').addEventListener('click', ()=>{
-  if(current < 4){
-    if(!validateCurrentStep()) return;
-    if(current===3) buildReview();
-    showStep(current+1);
-  }else{
-    const record = collectRecord();
-    const id = saveRecord(STORAGE_KEY, record);
-    showConstancia({...record,_id:id});
-  }
-});
+        <div data-step="3" hidden>
+          <h3>Paso 3 · Actividades y Fechas</h3>
+          <div class="row">
+            <div class="input flex-1">
+              <label>Actividad (NAES)</label>
+              <select name="actividad" required>
+                <option value="">— Seleccionar —</option>
+                <option value="4711 — Venta al por menor en comercios no especializados">4711 — Venta al por menor en comercios no especializados</option>
+                <option value="6201 — Desarrollo de software">6201 — Desarrollo de software</option>
+                <option value="5610 — Servicios de comidas y bebidas">5610 — Servicios de comidas y bebidas</option>
+              </select>
+            </div>
+            <div class="input"><label>Fecha de inicio</label><input type="date" name="fecha_inicio" required></div>
+          </div>
+          <div class="row">
+            <div class="input"><label><input type="checkbox" name="retencion"> Agente de Retención</label></div>
+            <div class="input"><label><input type="checkbox" name="percepcion"> Agente de Percepción</label></div>
+            <div class="input"><label><input type="checkbox" name="exento"> Exento</label></div>
+            <div class="input"><label><input type="checkbox" name="dfe_aceptado"> DFE aceptado</label></div>
+          </div>
+        </div>
 
-function q(name){ return form.elements[name]; }
+        <div data-step="4" hidden>
+          <h3>Paso 4 · Revisión</h3>
+          <p class="notice">Verificá los datos antes de guardar. Se almacenan localmente (este navegador).</p>
+          <div id="review" class="card"></div>
+        </div>
 
-function validateCurrentStep(){
-  const n = current; const err = m=>{ alert(m); return false; };
-  if(n===1){
-    if(!q('razon_social').value.trim()) return err('Completá la razón social.');
-    if(!validateCUIT11(q('cuit').value)) return err('CUIT inválido (11 dígitos).');
-    if(!validatePhoneDigits(q('telefono').value)) return err('Teléfono inválido.');
-    if(!validateEmail(q('email').value)) return err('Email inválido.');
-    return true;
-  }
-  if(n===2){
-    if(!q('df_calle').value.trim() || !q('df_numero').value.trim() || !q('df_localidad').value.trim()) return err('Completá el domicilio fiscal.');
-    if(!q('da_calle').value.trim() || !q('da_numero').value.trim() || !q('da_localidad').value.trim()) return err('Completá el domicilio de actividad.');
-    if(!validateCP(q('cp').value,'PBA')) return err('CP debe ser #### (PBA).');
-    return true;
-  }
-  if(n===3){
-    if(!q('actividad').value) return err('Seleccioná una actividad.');
-    if(!q('fecha_inicio').value) return err('Ingresá la fecha de inicio.');
-    return true;
-  }
-  return true;
-}
+        <div class="row no-print">
+          <button class="btn" type="button" id="btn-prev">← Anterior</button>
+          <div class="flex-1"></div>
+          <button class="btn primary" type="button" id="btn-next">Siguiente →</button>
+        </div>
+      </form>
+    </div>
 
-function collectRecord(){
-  const f = Object.fromEntries(new FormData(form).entries());
-  return {
-    _tipo:'LOCAL',
-    creado_en: nowISO(),
-    ...f,
-    retencion: !!q('retencion')?.checked,
-    percepcion: !!q('percepcion')?.checked,
-    exento: !!q('exento')?.checked,
-    dfe_aceptado: !!q('dfe_aceptado')?.checked
-  };
-}
-
-function buildReview(){
-  const r = collectRecord();
-  const entries = Object.entries(r).filter(([k])=>!k.startsWith('_'));
-  reviewBox.innerHTML = '<table class="table"><thead><tr><th>Campo</th><th>Valor</th></tr></thead><tbody>' +
-    entries.map(([k,v])=>`<tr><td>${k}</td><td>${v}</td></tr>`).join('') + '</tbody></table>';
-}
-
-function showConstancia(r){
-  screenForm.hidden = true; screenConst.hidden = false;
-  constanciaBox.innerHTML = `
-    <div class="print-only"><h1>Constancia — IIBB Local (Simulada)</h1></div>
-    <p><b>ID local:</b> ${r._id} · <b>Fecha:</b> ${r.creado_en}</p>
-    <hr class="sep">
-    <h3>Titular</h3>
-    <p>${r.razon_social} — CUIT ${r.cuit}</p>
-    <p>Tel: ${r.telefono} — Email: ${r.email}</p>
-    <hr class="sep">
-    <h3>Domicilio Fiscal</h3>
-    <p>${r.df_calle} ${r.df_numero}, ${r.df_localidad} (CP ${r.cp})</p>
-    <h3>Domicilio de Actividad</h3>
-    <p>${r.da_calle} ${r.da_numero}, ${r.da_localidad}, PBA</p>
-    <hr class="sep">
-    <h3>Actividad y Regímenes</h3>
-    <p>Actividad: ${r.actividad} · Inicio: ${r.fecha_inicio}</p>
-    <p>Retención: ${r.retencion?'Sí':'No'} · Percepción: ${r.percepcion?'Sí':'No'} · Exento: ${r.exento?'Sí':'No'} · DFE: ${r.dfe_aceptado?'Aceptado':'Pendiente'}</p>
-  `;
-}
+    <div id="screen-constancia" class="card" hidden>
+      <h2>Constancia — IIBB Local (Simulada)</h2>
+      <div id="constancia"></div>
+      <hr class="sep">
+      <div class="row no-print">
+        <button class="btn" onclick="window.print()">🖨️ Imprimir/Guardar PDF</button>
+        <a class="btn ghost" href="../">Volver al inicio</a>
+      </div>
+    </div>
+  </div>
+  <script type="module" src="../assets/utils.js"></script>
+  <script type="module" src="./app.js"></script>
+  </div>
+  <script type="module" src="../assets/utils.js"></script>
+  <script type="module" src="./app.js"></script>
+</body>
+</html>
