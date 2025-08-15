@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>ARBA · Convenio Multilateral (Sede PBA) — Simulación</title>
+  <link rel="stylesheet" href="../assets/styles.css">
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <div class="brand">
+        <div class="logo">A</div>
+        <h1>ARBA · Convenio Multilateral (Sede PBA) — Simulación</h1>
+      </div>
+      <a class="btn ghost" href="../">← Volver</a>
+    </div>
+<div class="container">
+    <div class="header">
+      <h1>Convenio Multilateral — Sede PBA (Simulación)</h1>
+      <a class="btn ghost" href="../">← Volver</a>
+    </div>
+    <div class="stepper" id="stepper"></div>
+
+    <div id="screen-form" class="card">
+      <form id="form">
+        <div data-step="1">
+          <h3>Paso 1 · Identificación</h3>
+          <div class="row">
+            <div class="input flex-1"><label>Razón social</label><input required name="razon_social"></div>
+            <div class="input"><label>CUIT</label><input required name="cuit" inputmode="numeric" maxlength="11"></div>
+          </div>
+          <div class="row">
+            <div class="input"><label>Teléfono</label><input required name="telefono" inputmode="numeric"></div>
+            <div class="input flex-1"><label>Email</label><input required name="email" type="email"></div>
+          </div>
+        </div>
+
+        <div data-step="2" hidden>
+          <h3>Paso 2 · Jurisdicciones</h3>
+          <p class="notice">Sede principal: <b>PBA</b> (fija). Agregá otras jurisdicciones si corresponde.</p>
+          <div class="row">
+            <div class="input"><label><input type="checkbox" name="j_CABA"> CABA</label></div>
+            <div class="input"><label><input type="checkbox" name="j_CBA"> Córdoba</label></div>
+            <div class="input"><label><input type="checkbox" name="j_SFE"> Santa Fe</label></div>
+            <div class="input"><label><input type="checkbox" name="j_MZA"> Mendoza</label></div>
+          </div>
+        </div>
+
+        <div data-step="3" hidden>
+          <h3>Paso 3 · Actividades por jurisdicción</h3>
+          <div id="act-rows"></div>
+          <div class="row">
+            <div class="input">
+              <label>Jurisdicción</label>
+              <select id="act_j">
+                <option value="PBA">PBA (sede)</option>
+                <option value="CABA">CABA</option>
+                <option value="CBA">Córdoba</option>
+                <option value="SFE">Santa Fe</option>
+                <option value="MZA">Mendoza</option>
+              </select>
+            </div>
+            <div class="input flex-1">
+              <label>Actividad (NAES)</label>
+              <select id="act_a">
+                <option value="">— Seleccionar —</option>
+                <option value="4711 — Venta al por menor">4711 — Venta al por menor</option>
+                <option value="6201 — Desarrollo de software">6201 — Desarrollo de software</option>
+                <option value="5610 — Comidas y bebidas">5610 — Comidas y bebidas</option>
+              </select>
+            </div>
+            <div class="input"><label>Alícuota (%)</label><input id="act_alicuota" type="number" min="0" step="0.01" placeholder="Ej: 3.5"></div>
+            <button class="btn" type="button" id="btnAddAct">Agregar</button>
+          </div>
+        </div>
+
+        <div data-step="4" hidden>
+          <h3>Paso 4 · Distribución inicial</h3>
+          <p class="notice">La suma debe dar 100%. Por defecto, PBA 100%.</p>
+          <div id="dist-rows"></div>
+          <div class="row">
+            <div class="input"><label>PBA (%)</label><input type="number" min="0" max="100" step="0.01" name="dist_PBA" value="100"></div>
+            <div class="input"><label>CABA (%)</label><input type="number" min="0" max="100" step="0.01" name="dist_CABA" value="0"></div>
+            <div class="input"><label>CBA (%)</label><input type="number" min="0" max="100" step="0.01" name="dist_CBA" value="0"></div>
+            <div class="input"><label>SFE (%)</label><input type="number" min="0" max="100" step="0.01" name="dist_SFE" value="0"></div>
+            <div class="input"><label>MZA (%)</label><input type="number" min="0" max="100" step="0.01" name="dist_MZA" value="0"></div>
+          </div>
+          <div class="row">
+            <div class="input"><label>Fecha de inicio</label><input type="date" name="fecha_inicio" required></div>
+            <div class="input"><label><input type="checkbox" name="dfe_aceptado"> DFE aceptado</label></div>
+          </div>
+        </div>
+
+        <div data-step="5" hidden>
+          <h3>Paso 5 · Revisión</h3>
+          <div id="review" class="card"></div>
+        </div>
+
+        <div class="row no-print">
+          <button class="btn" type="button" id="btn-prev">← Anterior</button>
+          <div class="flex-1"></div>
+          <button class="btn primary" type="button" id="btn-next">Siguiente →</button>
+        </div>
+      </form>
+    </div>
+
+    <div id="screen-constancia" class="card" hidden>
+      <h2>Constancia — CM (Simulada)</h2>
+      <div id="constancia"></div>
+      <hr class="sep">
+      <div class="row no-print">
+        <button class="btn" onclick="window.print()">🖨️ Imprimir/Guardar PDF</button>
+        <a class="btn ghost" href="../">Volver al inicio</a>
+      </div>
+    </div>
+  </div>
+  <script type="module" src="../assets/utils.js"></script>
+  <script type="module" src="./app.js"></script>
+  </div>
+  <script type="module" src="../assets/utils.js"></script>
+  <script type="module" src="./app.js"></script>
+</body>
+</html>
